@@ -1,2 +1,31 @@
 # wsk-authenticsabahan-app
 wsk-authenticsabahan-app
+[README.md](https://github.com/user-attachments/files/32329990/README.md)[build-apk.yml](https://github.com/user-attachments/files/32330027/build-apk.yml)name: Build WSK Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Build Debug APK
+        run: gradle assembleDebug --no-daemon
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: WSK-Restaurant-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
